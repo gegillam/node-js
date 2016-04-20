@@ -1,0 +1,85 @@
+<style>
+    h1{
+        
+        font-size:3em;
+        color:white;
+        line-height: 90px; 
+        text-shadow: 1px 1px 9px rgba(0, 0, 0, 0.65);
+        font-family: 'Open Sans', sans-serif;
+        display: table-cell;
+        vertical-align: middle;
+        text-align:center;
+    }
+    
+    #thought {
+
+        position:absolute; height:100%; width:80%; left:10%;
+        display: table;
+    }
+    .fa-angle-right{
+        float:right;
+    }
+    #nav{
+        font-size:8em;
+    }
+
+</style>
+
+
+<body/>
+<div id='thought'>
+    <h1></h1>
+</div>
+<!--span id='nav'>
+    <i class='fa fa-angle-left'></i>
+    <i class='fa fa-angle-right'></i>
+</span-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<script>
+    'use strict';
+document.documentElement.style.overflow = 'hidden'; //hide scrollbars
+var d = new Date();
+var n = d.getHours()+1;
+
+
+function update() {
+    $.ajax({
+      dataType:'json',
+      url:'https://www.reddit.com/r/earthporn.json', 
+    	success: (x) => {
+      	let pics = []
+        $.each( x.data.children, (k,v) => {
+            if ((/\.(gif|jpg|jpeg|tiff|png)$/i).test(v.data.url))   pics.push(v.data.url);
+        });  
+    
+        $('body').css({
+        	'background': '#000 url('+pics[getRandomInt(0,pics.length)]+') no-repeat',
+            'background-size': 'cover'
+        });
+      }
+    });
+    
+    $.ajax({
+      dataType:'json',
+      url:'https://www.reddit.com/r/showerthoughts.json', 
+    	success: (x) => {
+      	let quotes = []
+        $.each( x.data.children, (k,v) => {
+          quotes.push(v.data.title);
+        });  
+        $('h1').text(quotes[getRandomInt(0,quotes.length)]);
+      }
+    });
+}
+    
+    $(document).on('ready click', update);
+    setInterval(update, 1000000);
+    
+    
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+</script>
+
