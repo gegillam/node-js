@@ -1,8 +1,7 @@
 var express = require("express");
-var dataController = require("./dataController");
-var weatherController = require("./weatherController");
-var xkcdController = require("./xkcdController");
-var util = require("util");
+var dataController = require("./controllers/dataController");
+var weatherController = require("./controllers/weatherController");
+var xkcdController = require("./controllers/xkcdController");
 
 var router = express.Router();
 
