@@ -1,6 +1,6 @@
 var fs = require("fs"),
 util = require("util"),
-config = JSON.parse(fs.readFileSync('config.json', 'utf8')),
+config = JSON.parse(fs.readFileSync('config.json', 'utf8')), //store API keys in text file
 http = require('http');
 
 module.exports = {
