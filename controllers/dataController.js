@@ -7,7 +7,7 @@ var app = express();
 
 app.use(bodyParser.json());
 
-var connection = mysql.createConnection({
+var connection = mysql.createConnection({ //need new connection data - this free / test db expired
   host     : 'sql5.freemysqlhosting.net',
   user     : 'sql5113691',
   password : 'r45kIvI24Z',
