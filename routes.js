@@ -10,9 +10,11 @@ var router = express.Router();
 router.route('/data').post(dataController.post);
 router.route('/data').get(dataController.get);
 router.route('/data').put(dataController.update);
-router.route('/data').delete(dataController.delete);
+//router.route('/data').delete(dataController.delete);
 
-router.route('/dateWaitController').get(dateWaitController.get);
+router.route('/data/:id').delete(dataController.deleteById);
+
+router.route('/dateWait').get(dateWaitController.get);
 
 router.route('/xkcd').get(xkcdController.get);
 

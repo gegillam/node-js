@@ -7,11 +7,11 @@ var app = express();
 
 app.use(bodyParser.json());
 
-var connection = mysql.createConnection({ //need new connection data - this free / test db expired
-  host     : 'sql5.freemysqlhosting.net',
-  user     : 'sql5113691',
-  password : 'r45kIvI24Z',
-  database : 'sql5113691'
+var connection = mysql.createConnection({
+  host     : 'db02.cqberbcjeyum.us-east-1.rds.amazonaws.com',
+  user     : 'Administrator',
+  password : 'GGQ3Cff*Se',
+  database : 'db02'
 });
 
 module.exports = {
@@ -43,7 +43,8 @@ module.exports = {
       });
     },
     delete: function(req,res){
-      var query = connection.query('DELETE from `table` WHERE id = ? ', req.body.id, function(err, rows){
+      var query = connection.query('DELETE from `table` WHERE id =  ?' , req.body.id, function(err, rows){
+util.log(req);
            if (err) throw err;
            res.json({
             affectedRows: rows.affectedRows,
@@ -51,6 +52,17 @@ module.exports = {
           });
       });
     },
+
+    deleteById: function(req,res){
+      var query = connection.query('DELETE from `table` WHERE id = ' + req.params.id , req.body.id, function(err, rows){
+util.log(req);
+           if (err) throw err;
+           res.json({
+            affectedRows: rows.affectedRows,
+            query: query.sql
+          });
+      });
+},
     update: function(req, res){
       var query = connection.query(
         'UPDATE `table` set ? where id = ' + req.body.id , req.body, function(err, rows){

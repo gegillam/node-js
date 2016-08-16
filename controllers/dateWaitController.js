@@ -8,7 +8,10 @@ var app = express();
 app.use(bodyParser.json());
 
 var connection = mysql.createConnection({
-//TODO: GET CREDS
+  host     : 'db02.cqberbcjeyum.us-east-1.rds.amazonaws.com',
+  user     : 'Administrator',
+  password : 'GGQ3Cff*Se',
+  database : 'db02'
 });
 
 module.exports = {
