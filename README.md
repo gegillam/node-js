@@ -1,5 +1,12 @@
 # node-js
 
+Build Instructions:
+  git clone https://github.com/node-js.git
+  cd node-js
+  npm install
+  sudo node server.js
+
+
 - web server (serves api & client app - does not expose API code)
  - server.js is "main" file 
  - minimal web client
