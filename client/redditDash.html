@@ -1,0 +1,122 @@
+
+<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+  <script
+    src="https://www.gstatic.com/charts/loader.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<div id="piechart" style="width: 450px; height: 250px;"></div>
+<div id='sum'>sum</div>
+<ul class="list-group">
+
+</ul>
+<input id='txtName'></input>
+<script>
+//START REDUCE CODE
+var _ = {
+    groupData: function(array) {
+        var result = []
+        array.reduce(function(res, value) {
+            if (!res[value.subreddit]) {
+                res[value.subreddit] = {
+                    score: 0,
+                    subreddit: value.subreddit
+                };
+                result.push(res[value.subreddit])
+            }
+            res[value.subreddit].score += value.score
+            return res;
+        }, {});
+    return result;
+    },
+    formatData: function(array) {
+    	var result = []
+    	result.push(['subreddit', 'score'])
+    	array.forEach(function(x) {
+	  	  result.push([x.subreddit, x.score])
+  	  })
+      return result;
+    }
+}
+//END REDUCE CODE
+
+
+
+
+
+function loadData(name) {
+  $.ajax({
+  	url: 'https://www.reddit.com/user/' + name + '.json?count=100',
+    success: function(res) {
+
+      	  res = res.data.children
+
+          var x = res
+          	.filter((child) => child.data.ups >= 2)
+
+          var d = []
+          var sum = 0
+          x = x.forEach(function(child) {
+            console.log(child)
+          	child = {
+            	ups: child.data.ups,
+              downs: child.data.downs,
+              score: child.data.score,
+              body: child.data.body,
+              subreddit: child.data.subreddit
+            }
+            sum += child.ups
+              d.push(child)
+
+              console.log(child.subreddit)
+              $('ul').append($('<li>')
+                .css({fontSize:  11})
+  							.text(child.subreddit + ': ' + child.body)
+                .addClass('list-group-item')
+                	.append( $('<span>')
+                  	.text( child.score)
+                    .addClass('badge')))
+          })
+
+          $('#sum').html(sum)
+
+          var x = _.groupData(d).sort((x, y) => y.score > x.score)
+          x = _.formatData(x)
+
+
+          //START CHART
+          google.charts.load('current', {'packages':['corechart']});
+          google.charts.setOnLoadCallback(drawChart);
+          function drawChart() {
+
+          var data = google.visualization.arrayToDataTable(x);
+
+          var options = {
+            title: 'By Sub'
+          };
+
+          var chart = new 		google.visualization.PieChart(document.getElementById('piechart'));
+
+          chart.draw(data, options);
+        }
+    	  //END CHART
+    },
+    fail: function(res) {
+  	  console.log(res)
+      $('#ul').append('404')
+    }
+  })
+}
+function clearData() {
+  //TODO: IMPLEMENT CLEAR DATA LOGIC
+  $('ul').empty();
+}
+
+loadData()
+$('#txtName').blur(function() {
+  clearData('')
+  loadData($('#txtName').val())
+})
+</script>

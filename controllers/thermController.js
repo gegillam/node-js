@@ -20,7 +20,10 @@ module.exports = {
 
     },
     get: function(req, res){
-      res.json(x);
-    }
+      res.json({
+        res: res.statusCode,
+        body: x,
+      });
+    },
 
 };

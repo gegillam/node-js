@@ -1,16 +1,16 @@
 <style>
     h1{
-        
+
         font-size:3em;
         color:white;
-        line-height: 90px; 
+        line-height: 90px;
         text-shadow: 1px 1px 9px rgba(0, 0, 0, 0.65);
         font-family: 'Open Sans', sans-serif;
         display: table-cell;
         vertical-align: middle;
         text-align:center;
     }
-    
+
     #thought {
 
         position:absolute; height:100%; width:80%; left:10%;
@@ -47,39 +47,38 @@ var n = d.getHours()+1;
 function update() {
     $.ajax({
       dataType:'json',
-      url:'https://www.reddit.com/r/earthporn.json', 
+      url:'https://www.reddit.com/r/earthporn.json',
     	success: (x) => {
       	let pics = []
         $.each( x.data.children, (k,v) => {
             if ((/\.(gif|jpg|jpeg|tiff|png)$/i).test(v.data.url))   pics.push(v.data.url);
-        });  
-    
+        });
+
         $('body').css({
         	'background': '#000 url('+pics[getRandomInt(0,pics.length)]+') no-repeat',
             'background-size': 'cover'
         });
       }
     });
-    
+
     $.ajax({
       dataType:'json',
-      url:'https://www.reddit.com/r/showerthoughts.json', 
+      url:'https://www.reddit.com/r/showerthoughts.json',
     	success: (x) => {
       	let quotes = []
         $.each( x.data.children, (k,v) => {
           quotes.push(v.data.title);
-        });  
+        });
         $('h1').text(quotes[getRandomInt(0,quotes.length)]);
       }
     });
 }
-    
+
     $(document).on('ready click', update);
     setInterval(update, 1000000);
-    
-    
+
+
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 </script>
-
